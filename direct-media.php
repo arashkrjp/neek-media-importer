@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Direct Media
- * Plugin URI: https://arashkrajabpour.ir
+ * Plugin URI: https://github.com/arashkrjp/direct-media
  * Description: Transfer remote images, video, and audio directly into the WordPress Media Library, with optional image conversion and resizing.
  * Version: 1.0.1
  * Author: Arashk Rajabpour
