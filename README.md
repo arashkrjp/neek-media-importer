@@ -82,7 +82,3 @@ The default maximum size for each remote file is **100 MB**.
 Direct Media is licensed under the **GPL v2 or later**.
 
 See the [GNU General Public License v2.0](https://www.gnu.org/licenses/gpl-2.0.html).
-
-## Author
-
-**Arashk Rajabpour**
