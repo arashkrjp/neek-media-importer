@@ -6,8 +6,7 @@ Direct Media is a WordPress plugin that allows you to transfer remote images, vi
 
 * Add up to **20 remote media URLs** at once.
 * Transfer **two files concurrently**.
-* Transfer images without conversion.
-* Convert images to **JPG, WebP, or AVIF**.
+* Transfer images and convert them to **JPG, WebP, or AVIF**.
 * Set **image quality** for converted images.
 * Set optional **maximum width and height** for images.
 * Transfer **video and audio files without conversion**.
