@@ -1,11 +1,11 @@
 ( function( $, wp ) {
 	'use strict';
 
-	if ( ! wp || ! wp.media || ! wp.media.view || ! window.directMediaSettings ) {
+	if ( ! wp || ! wp.media || ! wp.media.view || ! window.neekMediaImporterSettings ) {
 		return;
 	}
 
-	var settings = window.directMediaSettings;
+	var settings = window.neekMediaImporterSettings;
 	var strings = settings.strings;
 	var imageExtensions = [ 'jpg', 'jpeg', 'jpe', 'png', 'gif', 'webp', 'avif', 'bmp', 'tif', 'tiff', 'heic', 'heif' ];
 	var itemCounter = 0;
@@ -57,16 +57,16 @@
 		} ).join( '' );
 	}
 
-	var DirectMediaView = wp.Backbone.View.extend( {
-		className: 'direct-media-app',
+	var NeekMediaImporterView = wp.Backbone.View.extend( {
+		className: 'neek-media-importer-app',
 
 		events: {
-			'click .direct-media-add': 'addUrls',
-			'click .direct-media-transfer-all': 'transferAll',
-			'click .direct-media-clear': 'clearCompleted',
-			'click .direct-media-remove': 'removeItem',
-			'click .direct-media-transfer': 'transferSingle',
-			'input .direct-media-url': 'handleUrlChange'
+			'click .neek-media-importer-add': 'addUrls',
+			'click .neek-media-importer-transfer-all': 'transferAll',
+			'click .neek-media-importer-clear': 'clearCompleted',
+			'click .neek-media-importer-remove': 'removeItem',
+			'click .neek-media-importer-transfer': 'transferSingle',
+			'input .neek-media-importer-url': 'handleUrlChange'
 		},
 
 		initialize: function() {
@@ -77,23 +77,23 @@
 
 		render: function() {
 			this.$el.html(
-				'<div class="direct-media-shell">' +
-					'<div class="direct-media-header">' +
+				'<div class="neek-media-importer-shell">' +
+					'<div class="neek-media-importer-header">' +
 						'<h2>' + escapeHtml( strings.heading ) + '</h2>' +
 						'<p>' + escapeHtml( strings.urlHelp ) + '</p>' +
 					'</div>' +
-					'<label class="screen-reader-text" for="direct-media-urls">' + escapeHtml( strings.urlHelp ) + '</label>' +
-					'<textarea id="direct-media-urls" class="direct-media-urls" rows="5" placeholder="https://example.com/image.jpg&#10;https://example.com/video.mp4"></textarea>' +
-					'<div class="direct-media-toolbar">' +
-						'<button type="button" class="button button-primary direct-media-add">' + escapeHtml( strings.addUrls ) + '</button>' +
-						'<span class="direct-media-notice" role="status" aria-live="polite"></span>' +
+					'<label class="screen-reader-text" for="neek-media-importer-urls">' + escapeHtml( strings.urlHelp ) + '</label>' +
+					'<textarea id="neek-media-importer-urls" class="neek-media-importer-urls" rows="5" placeholder="https://example.com/image.jpg&#10;https://example.com/video.mp4"></textarea>' +
+					'<div class="neek-media-importer-toolbar">' +
+						'<button type="button" class="button button-primary neek-media-importer-add">' + escapeHtml( strings.addUrls ) + '</button>' +
+						'<span class="neek-media-importer-notice" role="status" aria-live="polite"></span>' +
 					'</div>' +
-					'<div class="direct-media-items" aria-live="polite"></div>' +
-					'<div class="direct-media-empty">' + escapeHtml( strings.noItems ) + '</div>' +
-					'<div class="direct-media-footer">' +
-						'<button type="button" class="button button-primary direct-media-transfer-all">' + escapeHtml( strings.transferAll ) + '</button>' +
-						'<button type="button" class="button direct-media-clear">' + escapeHtml( strings.clearCompleted ) + '</button>' +
-						'<span class="direct-media-summary"></span>' +
+					'<div class="neek-media-importer-items" aria-live="polite"></div>' +
+					'<div class="neek-media-importer-empty">' + escapeHtml( strings.noItems ) + '</div>' +
+					'<div class="neek-media-importer-footer">' +
+						'<button type="button" class="button button-primary neek-media-importer-transfer-all">' + escapeHtml( strings.transferAll ) + '</button>' +
+						'<button type="button" class="button neek-media-importer-clear">' + escapeHtml( strings.clearCompleted ) + '</button>' +
+						'<span class="neek-media-importer-summary"></span>' +
 					'</div>' +
 				'</div>'
 			);
@@ -104,7 +104,7 @@
 
 		addUrls: function() {
 			var view = this;
-			var raw = this.$( '.direct-media-urls' ).val();
+			var raw = this.$( '.neek-media-importer-urls' ).val();
 			var candidates = raw.split( /\r?\n/ ).map( function( url ) {
 				return url.trim();
 			} ).filter( Boolean );
@@ -146,7 +146,7 @@
 			}
 
 			if ( added ) {
-				this.$( '.direct-media-urls' ).val( '' );
+				this.$( '.neek-media-importer-urls' ).val( '' );
 			}
 
 			this.updateControls();
@@ -163,40 +163,40 @@
 				request: null
 			};
 			var imageFields = image ? (
-				'<div class="direct-media-image-options">' +
+				'<div class="neek-media-importer-image-options">' +
 					'<label><span>' + escapeHtml( strings.format ) + '</span>' +
-						'<select class="direct-media-format">' +
+						'<select class="neek-media-importer-format">' +
 							'<option value="original">' + escapeHtml( strings.noConversion ) + '</option>' +
 							outputOptions( extension ) +
 						'</select>' +
 					'</label>' +
 					'<label><span>' + escapeHtml( strings.quality ) + '</span>' +
-						'<input class="direct-media-quality" type="number" min="1" max="100" value="82">' +
+						'<input class="neek-media-importer-quality" type="number" min="1" max="100" value="82">' +
 					'</label>' +
 					'<label><span>' + escapeHtml( strings.maxWidth ) + '</span>' +
-						'<input class="direct-media-width" type="number" min="1" max="12000" placeholder="' + escapeHtml( strings.optional ) + '">' +
+						'<input class="neek-media-importer-width" type="number" min="1" max="12000" placeholder="' + escapeHtml( strings.optional ) + '">' +
 					'</label>' +
 					'<label><span>' + escapeHtml( strings.maxHeight ) + '</span>' +
-						'<input class="direct-media-height" type="number" min="1" max="12000" placeholder="' + escapeHtml( strings.optional ) + '">' +
+						'<input class="neek-media-importer-height" type="number" min="1" max="12000" placeholder="' + escapeHtml( strings.optional ) + '">' +
 					'</label>' +
 				'</div>'
-			) : '<p class="direct-media-hint">' + escapeHtml( strings.imageHint ) + '</p>';
+			) : '<p class="neek-media-importer-hint">' + escapeHtml( strings.imageHint ) + '</p>';
 
 			this.items.push( item );
-			this.$( '.direct-media-items' ).append(
-				'<article class="direct-media-item" data-id="' + id + '">' +
-					'<div class="direct-media-item-number">#' + id + '</div>' +
-					'<div class="direct-media-preview" aria-hidden="true"><span class="dashicons dashicons-admin-media"></span></div>' +
-					'<div class="direct-media-fields">' +
-						'<label class="direct-media-url-field"><span>' + escapeHtml( strings.url ) + '</span>' +
-							'<input class="direct-media-url" type="url" value="' + escapeHtml( url ) + '">' +
+			this.$( '.neek-media-importer-items' ).append(
+				'<article class="neek-media-importer-item" data-id="' + id + '">' +
+					'<div class="neek-media-importer-item-number">#' + id + '</div>' +
+					'<div class="neek-media-importer-preview" aria-hidden="true"><span class="dashicons dashicons-admin-media"></span></div>' +
+					'<div class="neek-media-importer-fields">' +
+						'<label class="neek-media-importer-url-field"><span>' + escapeHtml( strings.url ) + '</span>' +
+							'<input class="neek-media-importer-url" type="url" value="' + escapeHtml( url ) + '">' +
 						'</label>' +
 						imageFields +
-						'<div class="direct-media-status" role="status">' + escapeHtml( strings.queued ) + '</div>' +
+						'<div class="neek-media-importer-status" role="status">' + escapeHtml( strings.queued ) + '</div>' +
 					'</div>' +
-					'<div class="direct-media-actions">' +
-						'<button type="button" class="button button-primary direct-media-transfer">' + escapeHtml( strings.transfer ) + '</button>' +
-						'<button type="button" class="button-link direct-media-remove" aria-label="' + escapeHtml( strings.remove ) + '">' +
+					'<div class="neek-media-importer-actions">' +
+						'<button type="button" class="button button-primary neek-media-importer-transfer">' + escapeHtml( strings.transfer ) + '</button>' +
+						'<button type="button" class="button-link neek-media-importer-remove" aria-label="' + escapeHtml( strings.remove ) + '">' +
 							'<span class="dashicons dashicons-no-alt"></span>' +
 						'</button>' +
 					'</div>' +
@@ -205,7 +205,7 @@
 		},
 
 		handleUrlChange: function( event ) {
-			var $item = $( event.currentTarget ).closest( '.direct-media-item' );
+			var $item = $( event.currentTarget ).closest( '.neek-media-importer-item' );
 			var item = this.getItem( $item.data( 'id' ) );
 			if ( item && 'pending' === item.status ) {
 				item.url = $( event.currentTarget ).val().trim();
@@ -213,7 +213,7 @@
 		},
 
 		removeItem: function( event ) {
-			var $item = $( event.currentTarget ).closest( '.direct-media-item' );
+			var $item = $( event.currentTarget ).closest( '.neek-media-importer-item' );
 			var item = this.getItem( $item.data( 'id' ) );
 
 			if ( ! item || 'transferring' === item.status ) {
@@ -228,7 +228,7 @@
 		},
 
 		transferSingle: function( event ) {
-			var $item = $( event.currentTarget ).closest( '.direct-media-item' );
+			var $item = $( event.currentTarget ).closest( '.neek-media-importer-item' );
 			var item = this.getItem( $item.data( 'id' ) );
 			if ( item && ( 'pending' === item.status || 'failed' === item.status ) ) {
 				item.status = 'queued';
@@ -275,7 +275,7 @@
 		startTransfer: function( item ) {
 			var view = this;
 			var $item = this.getItemElement( item.id );
-			var url = $item.find( '.direct-media-url' ).val().trim();
+			var url = $item.find( '.neek-media-importer-url' ).val().trim();
 
 			if ( ! isValidUrl( url ) ) {
 				item.status = 'failed';
@@ -296,10 +296,10 @@
 					action: settings.action,
 					nonce: settings.nonce,
 					url: item.url,
-					format: $item.find( '.direct-media-format' ).val() || 'original',
-					quality: $item.find( '.direct-media-quality' ).val() || 82,
-					max_width: $item.find( '.direct-media-width' ).val() || 0,
-					max_height: $item.find( '.direct-media-height' ).val() || 0
+					format: $item.find( '.neek-media-importer-format' ).val() || 'original',
+					quality: $item.find( '.neek-media-importer-quality' ).val() || 82,
+					max_width: $item.find( '.neek-media-importer-width' ).val() || 0,
+					max_height: $item.find( '.neek-media-importer-height' ).val() || 0
 				}
 			} ).done( function( response ) {
 				if ( response && response.success ) {
@@ -328,15 +328,15 @@
 		setItemState: function( item, state, message ) {
 			var $item = this.getItemElement( item.id );
 			$item.removeClass( 'is-pending is-queued is-transferring is-complete is-failed' ).addClass( 'is-' + state );
-			$item.find( 'input, select, .direct-media-transfer, .direct-media-remove' ).prop( 'disabled', 'transferring' === state || 'complete' === state );
-			$item.find( '.direct-media-status' ).html(
+			$item.find( 'input, select, .neek-media-importer-transfer, .neek-media-importer-remove' ).prop( 'disabled', 'transferring' === state || 'complete' === state );
+			$item.find( '.neek-media-importer-status' ).html(
 				( 'transferring' === state ? '<span class="spinner is-active"></span>' : '' ) + escapeHtml( message )
 			);
-			$item.find( '.direct-media-transfer' ).text( 'failed' === state ? 'Retry' : strings.transfer );
+			$item.find( '.neek-media-importer-transfer' ).text( 'failed' === state ? 'Retry' : strings.transfer );
 		},
 
 		showPreview: function( item, data ) {
-			var $preview = this.getItemElement( item.id ).find( '.direct-media-preview' );
+			var $preview = this.getItemElement( item.id ).find( '.neek-media-importer-preview' );
 			$preview.html( '<img src="' + escapeHtml( data.thumbnail ) + '" alt="">' );
 		},
 
@@ -379,7 +379,7 @@
 		},
 
 		getItemElement: function( id ) {
-			return this.$( '.direct-media-item[data-id="' + id + '"]' );
+			return this.$( '.neek-media-importer-item[data-id="' + id + '"]' );
 		},
 
 		responseMessage: function( response ) {
@@ -391,8 +391,8 @@
 		},
 
 		showNotice: function( message, type ) {
-			this.$( '.direct-media-notice' )
-				.attr( 'class', 'direct-media-notice' + ( type ? ' is-' + type : '' ) )
+			this.$( '.neek-media-importer-notice' )
+				.attr( 'class', 'neek-media-importer-notice' + ( type ? ' is-' + type : '' ) )
 				.text( message );
 		},
 
@@ -404,41 +404,41 @@
 				return 'complete' === item.status;
 			} ).length;
 
-			this.$( '.direct-media-empty' ).toggle( 0 === this.items.length );
-			this.$( '.direct-media-footer' ).toggle( this.items.length > 0 );
-			this.$( '.direct-media-transfer-all' ).prop( 'disabled', ! pending );
-			this.$( '.direct-media-clear' ).prop( 'disabled', ! completed );
-			this.$( '.direct-media-summary' ).text(
+			this.$( '.neek-media-importer-empty' ).toggle( 0 === this.items.length );
+			this.$( '.neek-media-importer-footer' ).toggle( this.items.length > 0 );
+			this.$( '.neek-media-importer-transfer-all' ).prop( 'disabled', ! pending );
+			this.$( '.neek-media-importer-clear' ).prop( 'disabled', ! completed );
+			this.$( '.neek-media-importer-summary' ).text(
 				this.items.length ? completed + ' / ' + this.items.length + ' complete' : ''
 			);
 		}
 	} );
 
 	function patchMediaFrame( FrameClass ) {
-		if ( ! FrameClass || FrameClass.prototype.directMediaEnabled ) {
+		if ( ! FrameClass || FrameClass.prototype.neekMediaImporterEnabled ) {
 			return;
 		}
 
 		var originalBindHandlers = FrameClass.prototype.bindHandlers;
 
-		FrameClass.prototype.directMediaEnabled = true;
+		FrameClass.prototype.neekMediaImporterEnabled = true;
 		FrameClass.prototype.bindHandlers = function() {
 			originalBindHandlers.apply( this, arguments );
-			this.on( 'router:create:browse', this.directMediaRouter, this );
-			this.on( 'content:render:direct-media', this.directMediaContent, this );
+			this.on( 'router:create:browse', this.neekMediaImporterRouter, this );
+			this.on( 'content:render:neek-media-importer', this.neekMediaImporterContent, this );
 		};
 
-		FrameClass.prototype.directMediaRouter = function( routerView ) {
+		FrameClass.prototype.neekMediaImporterRouter = function( routerView ) {
 			routerView.set( {
-				'direct-media': {
+				'neek-media-importer': {
 					text: strings.tabTitle,
 					priority: 70
 				}
 			} );
 		};
 
-		FrameClass.prototype.directMediaContent = function() {
-			this.content.set( new DirectMediaView( { controller: this } ) );
+		FrameClass.prototype.neekMediaImporterContent = function() {
+			this.content.set( new NeekMediaImporterView( { controller: this } ) );
 		};
 	}
 
@@ -450,9 +450,9 @@
 	}
 
 	$( function() {
-		var $adminApp = $( '#direct-media-admin-app' );
+		var $adminApp = $( '#neek-media-importer-admin-app' );
 		if ( $adminApp.length ) {
-			$adminApp.append( new DirectMediaView().render().el );
+			$adminApp.append( new NeekMediaImporterView().render().el );
 		}
 	} );
 } )( jQuery, window.wp );
