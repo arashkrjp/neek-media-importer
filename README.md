@@ -1,6 +1,6 @@
-# Direct Media
+# Neek Media Importer
 
-Direct Media is a WordPress plugin that allows you to transfer remote images, videos, and audio files directly into the WordPress Media Library.
+Neek Media Importer is a WordPress plugin that allows you to transfer remote images, videos, and audio files directly into the WordPress Media Library.
 
 ## Features
 
@@ -29,17 +29,17 @@ Direct Media is a WordPress plugin that allows you to transfer remote images, vi
 2. Copy the `direct-media` directory to:
 
 ```text
-wp-content/plugins/direct-media/
+wp-content/plugins/neek-media-importer/
 ```
 
-3. Activate **Direct Media** from the WordPress Plugins screen.
+3. Activate **Neek Media Importer** from the WordPress Plugins screen.
 4. Open the **Media Library**.
-5. Select the **Direct Media** tab.
+5. Select the **Neek Media Importer** tab.
 
 ## Usage
 
 1. Open the WordPress Media Library.
-2. Select the **Direct Media** tab.
+2. Select the **Neek Media Importer** tab.
 3. Enter the URLs of the remote media files.
 4. Choose the desired image options, if needed.
 5. Start the transfer.
@@ -47,7 +47,7 @@ wp-content/plugins/direct-media/
 
 ## Image Conversion
 
-Direct Media can transfer images in their original format or convert them to:
+Neek Media Importer can transfer images in their original format or convert them to:
 
 * **JPG**
 * **WebP**
@@ -69,8 +69,8 @@ The default maximum size for each remote file is **100 MB**.
 
 ### 1.0.1
 
-* Added a permanent Direct Media page under the WordPress **Media** menu.
-* Fixed Direct Media tab integration with WordPress media frames.
+* Added a permanent Neek Media Importer page under the WordPress **Media** menu.
+* Fixed Neek Media Importer tab integration with WordPress media frames.
 
 ### 1.0.0
 
@@ -78,6 +78,6 @@ The default maximum size for each remote file is **100 MB**.
 
 ## License
 
-Direct Media is licensed under the **GPL v2 or later**.
+Neek Media Importer is licensed under the **GPL v2 or later**.
 
 See the [GNU General Public License v2.0](https://www.gnu.org/licenses/gpl-2.0.html).
