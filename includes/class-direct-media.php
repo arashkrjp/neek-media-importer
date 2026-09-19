@@ -2,9 +2,9 @@
 
 defined( 'ABSPATH' ) || exit;
 
-final class Direct_Media {
-	private const AJAX_ACTION = 'direct_media_transfer';
-	private const NONCE_ACTION = 'direct_media_transfer';
+final class Neek_Media_Importer {
+	private const AJAX_ACTION = 'neek_media_importer_transfer';
+	private const NONCE_ACTION = 'neek_media_importer_transfer';
 	private const DEFAULT_MAX_FILE_SIZE = 104857600;
 
 	private static $instance;
@@ -25,23 +25,23 @@ final class Direct_Media {
 
 	public function register_admin_page(): void {
 		add_media_page(
-			'Direct Media',
-			'Direct Media',
+			'Neek Media Importer',
+			'Neek Media Importer',
 			'upload_files',
-			'direct-media',
+			'neek-media-importer',
 			array( $this, 'render_admin_page' )
 		);
 	}
 
 	public function render_admin_page(): void {
 		if ( ! current_user_can( 'upload_files' ) ) {
-			wp_die( esc_html__( 'You are not allowed to upload files.', 'direct-media' ) );
+			wp_die( esc_html__( 'You are not allowed to upload files.', 'neek-media-importer' ) );
 		}
 		?>
-		<div class="wrap direct-media-page">
-			<h1>Direct Media</h1>
+		<div class="wrap neek-media-importer-page">
+			<h1>Neek Media Importer</h1>
 			<p>Transfer remote images, video, and audio directly into the WordPress Media Library.</p>
-			<div id="direct-media-admin-app"></div>
+			<div id="neek-media-importer-admin-app"></div>
 		</div>
 		<?php
 	}
@@ -54,32 +54,32 @@ final class Direct_Media {
 		wp_enqueue_media();
 
 		wp_enqueue_style(
-			'direct-media',
-			DIRECT_MEDIA_URL . 'assets/css/direct-media.css',
+			'neek-media-importer',
+			NEEK_MEDIA_IMPORTER_URL . 'assets/css/neek-media-importer.css',
 			array(),
-			DIRECT_MEDIA_VERSION
+			NEEK_MEDIA_IMPORTER_VERSION
 		);
 
 		wp_enqueue_script(
-			'direct-media',
-			DIRECT_MEDIA_URL . 'assets/js/direct-media.js',
+			'neek-media-importer',
+			NEEK_MEDIA_IMPORTER_URL . 'assets/js/neek-media-importer.js',
 			array( 'jquery', 'media-views', 'wp-util' ),
-			DIRECT_MEDIA_VERSION,
+			NEEK_MEDIA_IMPORTER_VERSION,
 			true
 		);
 
 		wp_localize_script(
-			'direct-media',
-			'directMediaSettings',
+			'neek-media-importer',
+			'neekMediaImporterSettings',
 			array(
 				'action'         => self::AJAX_ACTION,
 				'nonce'          => wp_create_nonce( self::NONCE_ACTION ),
 				'maxItems'       => 20,
 				'requestDelay'   => 300,
-				'isAdminPage'    => 'media_page_direct-media' === $hook_suffix,
+				'isAdminPage'    => 'media_page_neek-media-importer' === $hook_suffix,
 				'supportedTypes' => $this->get_supported_output_types(),
 				'strings'        => array(
-					'tabTitle'          => 'Direct Media',
+					'tabTitle'          => 'Neek Media Importer',
 					'heading'           => 'Transfer remote media',
 					'urlHelp'           => 'Enter one direct image, video, or audio URL per line.',
 					'addUrls'           => 'Add URLs',
@@ -163,7 +163,7 @@ final class Direct_Media {
 
 		try {
 			$file_size = filesize( $temporary_file );
-			$max_size  = (int) apply_filters( 'direct_media_max_file_size', self::DEFAULT_MAX_FILE_SIZE );
+			$max_size  = (int) apply_filters( 'neek_media_importer_max_file_size', self::DEFAULT_MAX_FILE_SIZE );
 
 			if ( false === $file_size || $file_size < 1 ) {
 				return new WP_Error( 'empty_file', 'The downloaded file is empty.', array( 'status' => 400 ) );
