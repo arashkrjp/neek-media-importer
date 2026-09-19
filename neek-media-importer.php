@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Neek Media Importer
- * Plugin URI: https://arashkrajabpour.ir/neek-media-importer/
+ * Plugin URI: https://arashkrajabpour.ir/projects/neek-media-importer/
  * Description: Transfer remote images, video, and audio directly into the WordPress Media Library, with optional image conversion and resizing.
  * Version: 1.0.1
  * Author: Arashk Rajabpour
